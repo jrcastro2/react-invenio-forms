@@ -9,6 +9,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import _debounce from 'lodash/debounce';
 import _uniqBy from 'lodash/uniqBy';
+import _isEmpty from 'lodash/isEmpty';
 import axios from 'axios';
 import { Message } from 'semantic-ui-react';
 import { SelectField } from './SelectField';
@@ -35,7 +36,46 @@ export class RemoteSelectField extends Component {
       error: false,
       searchQuery: null,
       open: false,
+      isLoading: false,
+      errorMessage: null,
     };
+  }
+
+  componentDidMount() {
+    const {
+      initialSuggestions,
+      suggestionAPIUrl,
+      suggestionAPIHeaders,
+      serializeSuggestions,
+    } = this.props;
+    if (
+      !_isEmpty(initialSuggestions) &&
+      typeof initialSuggestions === 'string'
+    ) {
+      this.setState({ isLoading: true });
+      axios
+        .get(suggestionAPIUrl + '/' + initialSuggestions, {
+          headers: suggestionAPIHeaders,
+        })
+        .then((resp) => {
+          const initialSuggestions = resp?.data
+            ? serializeSuggestions([resp?.data])
+            : [];
+          this.setState({
+            selectedSuggestions: initialSuggestions,
+            suggestions: initialSuggestions,
+            isLoading: false,
+          });
+        })
+        .catch((e) => {
+          this.setState({
+            isLoading: false,
+            selectedSuggestions: [],
+            suggestions: [],
+            errorMessage: e.response.data.message,
+          });
+        });
+    }
   }
 
   onSelectValue = (event, { options, value, ...rest }) => {
@@ -203,16 +243,25 @@ export class RemoteSelectField extends Component {
 
   render() {
     const { compProps, uiProps } = this.getProps();
+    const {
+      isLoading,
+      error,
+      suggestions,
+      open,
+      isFetching,
+      errorMessage,
+    } = this.state;
     return (
       <SelectField
         {...uiProps}
-        allowAdditions={this.state.error ? false : uiProps.allowAdditions}
+        allowAdditions={error ? false : uiProps.allowAdditions}
         fieldPath={compProps.fieldPath}
-        options={this.state.suggestions}
+        options={suggestions}
         noResultsMessage={this.getNoResultsMessage()}
         search
+        disabled={isLoading}
         lazyLoad
-        open={this.state.open}
+        open={open}
         onClose={this.onClose}
         onFocus={this.onFocus}
         onBlur={this.onBlur}
@@ -222,7 +271,8 @@ export class RemoteSelectField extends Component {
           this.onSelectValue(event, data);
           formikProps.form.setFieldValue(compProps.fieldPath, data.value);
         }}
-        loading={this.state.isFetching}
+        loading={isFetching || isLoading}
+        error={errorMessage}
       />
     );
   }
