@@ -144,7 +144,7 @@ export class RemoteSelectField extends Component {
         // remove the paramsSerializer when fixed.
         // https://github.com/axios/axios/issues/3316
         paramsSerializer: (params) => {
-          return queryString.stringify(params, { arrayFormat: 'brackets' });
+          return queryString.stringify(params, { arrayFormat: 'repeat' });
         },
       })
       .then((resp) => resp?.data?.hits?.hits);
