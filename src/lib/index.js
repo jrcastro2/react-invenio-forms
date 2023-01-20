@@ -1,5 +1,5 @@
 // This file is part of React-Invenio-Forms
-// Copyright (C) 2020 CERN.
+// Copyright (C) 2020, 2023 CERN.
 // Copyright (C) 2020 Northwestern University.
 //
 // React-Invenio-Forms is free software; you can redistribute it and/or modify it
@@ -8,3 +8,4 @@
 export * from "./elements";
 export * from "./forms";
 export * from "./api";
+export { overridableRegistry } from "./overridenSingleton";
