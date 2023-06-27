@@ -15,6 +15,7 @@ export default class Input extends Component {
       description,
       disabled,
       type,
+      labelPopup,
     } = this.props;
 
     return (
@@ -24,7 +25,14 @@ export default class Input extends Component {
         required={required}
         helpText={description}
         disabled={disabled}
-        label={<FieldLabel htmlFor={fieldPath} icon={icon} label={label} />}
+        label={
+          <FieldLabel
+            htmlFor={fieldPath}
+            icon={icon}
+            label={label}
+            popup={labelPopup}
+          />
+        }
         placeholder={placeholder}
         type={type}
       />
@@ -41,6 +49,14 @@ Input.propTypes = {
   required: PropTypes.bool,
   disabled: PropTypes.bool,
   type: PropTypes.string,
+  labelPopup: PropTypes.shape({
+    ariaLabel: PropTypes.string.isRequired,
+    content: PropTypes.string.isRequired,
+    popupId: PropTypes.string.isRequired,
+    inverted: PropTypes.bool,
+    position: PropTypes.string,
+    size: PropTypes.string,
+  }),
 };
 
 Input.defaultProps = {
@@ -48,4 +64,5 @@ Input.defaultProps = {
   required: false,
   disabled: false,
   type: "input",
+  labelPopup: {},
 };

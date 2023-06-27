@@ -13,6 +13,7 @@ export default function MultiInput({
   label,
   icon,
   required,
+  labelPopup,
 }) {
   const [options, setOptions] = useState([]);
   const { values } = useFormikContext();
@@ -27,7 +28,14 @@ export default function MultiInput({
     <>
       <SelectField
         fieldPath={fieldPath}
-        label={<FieldLabel htmlFor={fieldPath} icon={icon} label={label} />}
+        label={
+          <FieldLabel
+            htmlFor={fieldPath}
+            icon={icon}
+            label={label}
+            popup={labelPopup}
+          />
+        }
         options={serializeValues(getIn(values, fieldPath, []))}
         placeholder={placeholder}
         required={required}
@@ -60,10 +68,19 @@ MultiInput.propTypes = {
   additionLabel: PropTypes.string,
   icon: PropTypes.string,
   required: PropTypes.bool,
+  labelPopup: PropTypes.shape({
+    ariaLabel: PropTypes.string.isRequired,
+    content: PropTypes.string.isRequired,
+    popupId: PropTypes.string.isRequired,
+    inverted: PropTypes.bool,
+    position: PropTypes.string,
+    size: PropTypes.string,
+  }),
 };
 
 MultiInput.defaultProps = {
   additionLabel: undefined,
   icon: undefined,
   required: false,
+  labelPopup: {},
 };

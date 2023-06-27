@@ -6,7 +6,8 @@ import { RichInputField } from "../../RichInputField";
 
 export default class RichInput extends Component {
   render() {
-    const { fieldPath, required, label, icon, description, editorConfig } = this.props;
+    const { fieldPath, required, label, icon, description, editorConfig, labelPopup } =
+      this.props;
     return (
       <>
         <RichInputField
@@ -14,7 +15,14 @@ export default class RichInput extends Component {
           fieldPath={fieldPath}
           required={required}
           editorConfig={editorConfig}
-          label={<FieldLabel htmlFor={fieldPath} icon={icon} label={label} />}
+          label={
+            <FieldLabel
+              htmlFor={fieldPath}
+              icon={icon}
+              label={label}
+              popup={labelPopup}
+            />
+          }
         />
         {description && <label className="helptext">{description}</label>}
       </>
@@ -29,10 +37,19 @@ RichInput.propTypes = {
   editorConfig: PropTypes.object,
   icon: PropTypes.string,
   required: PropTypes.bool,
+  labelPopup: PropTypes.shape({
+    ariaLabel: PropTypes.string.isRequired,
+    content: PropTypes.string.isRequired,
+    popupId: PropTypes.string.isRequired,
+    inverted: PropTypes.bool,
+    position: PropTypes.string,
+    size: PropTypes.string,
+  }),
 };
 
 RichInput.defaultProps = {
   icon: undefined,
   editorConfig: {},
+  labelPopup: {},
   required: false,
 };

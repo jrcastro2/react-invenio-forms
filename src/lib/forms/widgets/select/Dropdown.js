@@ -24,12 +24,20 @@ export default class Dropdown extends Component {
       multiple,
       clearable,
       required,
+      labelPopup,
     } = this.props;
     return (
       <>
         <SelectField
           fieldPath={fieldPath}
-          label={<FieldLabel htmlFor={fieldPath} icon={icon} label={label} />}
+          label={
+            <FieldLabel
+              htmlFor={fieldPath}
+              icon={icon}
+              label={label}
+              popup={labelPopup}
+            />
+          }
           options={this.serializeOptions(options)}
           search={search}
           multiple={multiple}
@@ -61,6 +69,14 @@ Dropdown.propTypes = {
   multiple: PropTypes.bool,
   clearable: PropTypes.bool,
   required: PropTypes.bool,
+  labelPopup: PropTypes.shape({
+    ariaLabel: PropTypes.string.isRequired,
+    content: PropTypes.string.isRequired,
+    popupId: PropTypes.string.isRequired,
+    inverted: PropTypes.bool,
+    position: PropTypes.string,
+    size: PropTypes.string,
+  }),
 };
 
 Dropdown.defaultProps = {
@@ -69,4 +85,5 @@ Dropdown.defaultProps = {
   multiple: false,
   clearable: true,
   required: false,
+  labelPopup: {},
 };

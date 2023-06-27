@@ -20,10 +20,11 @@ export default class AutocompleteDropdown extends Component {
       multiple,
       autocompleteFrom,
       autocompleteFromAcceptHeader,
+      labelPopup,
     } = this.props;
     return (
       <>
-        <FieldLabel htmlFor={fieldPath} icon={icon} label={label} />
+        <FieldLabel htmlFor={fieldPath} icon={icon} label={label} popup={labelPopup} />
         <Field name={fieldPath}>
           {({ form: { values } }) => {
             return (
@@ -75,6 +76,14 @@ AutocompleteDropdown.propTypes = {
   clearable: PropTypes.bool,
   multiple: PropTypes.bool,
   required: PropTypes.bool,
+  labelPopup: PropTypes.shape({
+    ariaLabel: PropTypes.string.isRequired,
+    content: PropTypes.string.isRequired,
+    popupId: PropTypes.string.isRequired,
+    inverted: PropTypes.bool,
+    position: PropTypes.string,
+    size: PropTypes.string,
+  }),
 };
 
 AutocompleteDropdown.defaultProps = {
@@ -83,4 +92,5 @@ AutocompleteDropdown.defaultProps = {
   clearable: false,
   multiple: false,
   required: false,
+  labelPopup: {},
 };
