@@ -15,6 +15,7 @@ export default class Input extends Component {
       description,
       disabled,
       type,
+      onKeyPress,
     } = this.props;
 
     return (
@@ -27,6 +28,7 @@ export default class Input extends Component {
         label={<FieldLabel htmlFor={fieldPath} icon={icon} label={label} />}
         placeholder={placeholder}
         type={type}
+        onKeyPress={onKeyPress}
       />
     );
   }
@@ -41,6 +43,7 @@ Input.propTypes = {
   required: PropTypes.bool,
   disabled: PropTypes.bool,
   type: PropTypes.string,
+  onKeyPress: PropTypes.func,
 };
 
 Input.defaultProps = {
@@ -48,4 +51,5 @@ Input.defaultProps = {
   required: false,
   disabled: false,
   type: "input",
+  onKeyPress: undefined,
 };
